@@ -1,87 +1,579 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Ribosoom Runner</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <main>
-    <div class="hero">
-      <div class="logo"><i></i><i></i></div>
-      <h1>Ribosoom <span>Runner</span></h1>
-      <p class="sub">Eiwitsynthese, mutaties en splicing</p>
-    </div>
+:root {
+  --bg: #0b1329;
+  --p: #131f37;
+  --p-hover: #1a2947;
+  --b: #243454;
+  --b-light: #334873;
+  --t: #f1f5f9;
+  --m: #94a3b8;
+  --g: #10b981;
+  --g-glow: rgba(16, 185, 129, 0.25);
+  --d: #3b82f6;
+  --d-glow: rgba(59, 130, 246, 0.25);
+  --r: #f87171;
+  --r-glow: rgba(248, 113, 113, 0.25);
+  
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
 
-    <div id="menu">
-      <div class="card">
-        <label>Naam<input type="text" id="nm" maxlength="30"></label>
-        <label>Klas</label>
-        <div class="row" id="kls" style="margin-top:6px">
-          <button class="s" data-k="4 havo">4 havo</button>
-          <button class="s" data-k="5 havo">5 havo</button>
-          <button class="s" data-k="4 vwo">4 vwo</button>
-          <button class="s" data-k="5 vwo">5 vwo</button>
-          <button class="s" data-k="6 vwo">6 vwo</button>
-        </div>
-      </div>
-      <div class="bin">[Binas Tabel 71C vereist]</div>
-      <div id="lv">
-        <label class="lvc">
-          <input type="radio" name="lv" value="1" checked>
-          <b>Level 1: Basissynthese &amp; tRNA</b>
-          <span>Transcriptie, anticodons en translatie</span>
-        </label>
-        <label class="lvc">
-          <input type="radio" name="lv" value="2">
-          <b>Level 2: Mutaties &amp; genetische fouten</b>
-          <span>Gemuteerd DNA en mutatie-analyse</span>
-        </label>
-        <label class="lvc">
-          <input type="radio" name="lv" value="3">
-          <b>Level 3: Eukaryotische pre-mRNA verwerking</b>
-          <span>Introns, exons en alternatieve splicing</span>
-        </label>
-        <label class="lvc">
-          <input type="radio" name="lv" value="4">
-          <b>Level 4: Bosslevel - sikkelcelanemie</b>
-          <span>Casus waarin alle thema's samenkomen</span>
-        </label>
-      </div>
-      <button class="big" id="st">Start spel</button>
-      <div class="row" style="margin-top:14px">
-        <button class="s" id="pr" style="flex:1">Oefenvragen</button>
-        <button class="s" id="kk" style="flex:1">Klassement</button>
-      </div>
-      <div class="card hide" id="pc">
-        <b>Kies thema's (geen punten, geen timer)</b>
-        <label class="o"><input type="checkbox" value="tr" checked> Transcriptie &amp; tRNA</label>
-        <label class="o"><input type="checkbox" value="sp" checked> Splicing (Introns/Exons)</label>
-        <label class="o"><input type="checkbox" value="tl" checked> Translatie</label>
-        <label class="o"><input type="checkbox" value="mu" checked> Mutaties</label>
-        <button id="ps">Start oefenen</button>
-      </div>
-      <p id="msg" class="no"></p>
-    </div>
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+  scroll-behavior: smooth;
+}
 
-    <div id="play" class="hide">
-      <div class="top">
-        <button class="x" id="stop">Stop Game</button>
-        <button class="s hide" id="back">Menu</button>
-        <div class="pgw" id="pgw"><div id="pg"></div></div>
-        <span class="stat" id="stk">Reeks <b id="sk">0</b></span>
-        <span class="stat" id="sct">Score <b id="sc">0</b></span>
-        <span class="stat" id="tw"><b id="tm">00:00</b></span>
-      </div>
-      <div class="m" id="info"></div>
-      <div id="tk"></div>
-      <div class="dock" id="dock"></div>
-    </div>
+* {
+  box-sizing: border-box;
+}
 
-    <div id="res" class="hide"></div>
-    <div id="lb" class="hide"></div>
-  </main>
-  <script src="app.js"></script>
-</body>
-</html>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: 
+    radial-gradient(circle at 50% 0%, #1e2942 0%, transparent 75%),
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0) 0 0/28px 28px,
+    var(--bg);
+  color: var(--t);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* Hero & Logo */
+.hero {
+  text-align: center;
+  padding: 24px 0 12px;
+}
+
+.sub {
+  color: var(--m);
+  margin: 4px 0 0;
+  font-size: 0.98rem;
+  font-weight: 400;
+}
+
+.logo {
+  position: relative;
+  width: 68px;
+  height: 60px;
+  margin: 0 auto 12px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.logo i {
+  position: absolute;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.logo i:first-child {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--d), #2563eb);
+  left: 0;
+  bottom: 0;
+  box-shadow: 0 0 20px var(--d-glow);
+}
+
+.logo i:last-child {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--g), #059669);
+  right: 0;
+  top: 0;
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 20px var(--g-glow);
+}
+
+.hero:hover .logo i:first-child {
+  transform: translate(-2px, 2px) scale(1.03);
+}
+
+.hero:hover .logo i:last-child {
+  transform: translate(2px, -2px) scale(1.03);
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #34d399 0%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+h1 span {
+  color: inherit;
+}
+
+h2 {
+  margin: 0.2em 0 0.5em;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Cards & Layout */
+.card {
+  background: var(--p);
+  border: 1px solid var(--b);
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin: 16px 0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.bin {
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.08);
+  color: #60a5fa;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 14px 0;
+  letter-spacing: 0.02em;
+}
+
+/* Buttons */
+button {
+  font: inherit;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #022c22;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 22px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 4px 14px var(--g-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--g-glow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px var(--g-glow);
+}
+
+button.s {
+  background: rgba(36, 52, 84, 0.5);
+  color: var(--t);
+  border: 1px solid var(--b-light);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+button.s:hover {
+  background: var(--p-hover);
+  border-color: var(--d);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--d-glow);
+}
+
+button.x {
+  background: rgba(248, 113, 113, 0.1);
+  color: var(--r);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+button.x:hover {
+  background: rgba(248, 113, 113, 0.2);
+  border-color: var(--r);
+  box-shadow: 0 4px 12px var(--r-glow);
+}
+
+button.on {
+  border-color: var(--g);
+  color: var(--g);
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 12px var(--g-glow);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.big {
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 16px;
+  letter-spacing: 0.02em;
+}
+
+/* Level Selection Cards */
+.lvc {
+  display: block;
+  background: var(--p);
+  border: 2px solid var(--b);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 12px 0;
+  cursor: pointer;
+  color: var(--t);
+  transition: all 0.2s ease;
+}
+
+.lvc input {
+  display: none;
+}
+
+.lvc b {
+  display: block;
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+}
+
+.lvc span {
+  color: var(--m);
+  font-size: 0.9rem;
+  margin-top: 2px;
+  display: block;
+}
+
+.lvc:hover {
+  border-color: var(--b-light);
+  transform: translateY(-2px);
+  background: var(--p-hover);
+}
+
+.lvc:has(input:checked) {
+  border-color: var(--g);
+  background: rgba(16, 185, 129, 0.08);
+  box-shadow: 0 0 20px var(--g-glow);
+}
+
+.lvc:has(input:checked) b {
+  color: var(--g);
+}
+
+/* Inputs */
+input[type=text] {
+  width: 100%;
+  background: var(--bg);
+  color: var(--t);
+  border: 2px solid var(--b);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 1.05rem;
+  margin: 6px 0 12px;
+  transition: all 0.2s ease;
+}
+
+input[type=text]:focus {
+  outline: none;
+  border-color: var(--d);
+  box-shadow: 0 0 0 3px var(--d-glow);
+}
+
+input.gok {
+  border-color: var(--g);
+  background: rgba(16, 185, 129, 0.08);
+  box-shadow: 0 0 10px var(--g-glow);
+}
+
+input.gno {
+  border-color: var(--r);
+  background: rgba(248, 113, 113, 0.08);
+  box-shadow: 0 0 10px var(--r-glow);
+}
+
+label {
+  display: block;
+  color: var(--m);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+label.o {
+  color: var(--t);
+  font-size: 1rem;
+  padding: 8px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+}
+
+label.o input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--g);
+  cursor: pointer;
+}
+
+/* Sequence & Nucleotides */
+.seq {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: #93c5fd;
+  word-break: break-all;
+  margin: 12px 0;
+  background: rgba(11, 19, 41, 0.8);
+  border: 1px solid var(--b-light);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.seq i {
+  font-style: normal;
+  font-weight: 800;
+}
+
+.bA { color: #34d399; text-shadow: 0 0 8px rgba(52, 211, 153, 0.3); }
+.bU, .bT { color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.3); }
+.bC { color: #60a5fa; text-shadow: 0 0 8px rgba(96, 165, 250, 0.3); }
+.bG { color: #f472b6; text-shadow: 0 0 8px rgba(244, 114, 182, 0.3); }
+
+/* Interactive Splicing Segments */
+.seg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--bg);
+  color: var(--t);
+  border: 2px solid var(--b-light);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: 6px 6px 6px 0;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.seg:hover {
+  border-color: var(--d);
+  transform: translateY(-1px);
+}
+
+.seg.sel {
+  border-color: var(--r);
+  color: var(--r);
+  background: rgba(248, 113, 113, 0.1);
+  text-decoration: line-through;
+  box-shadow: 0 0 10px var(--r-glow);
+}
+
+/* Header & Progress Bar */
+.top {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: rgba(11, 19, 41, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.pgw {
+  flex: 1;
+  min-width: 80px;
+  height: 10px;
+  background: var(--p);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--b);
+}
+
+.pgw div {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--d), var(--g));
+  border-radius: 10px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px var(--g-glow);
+}
+
+.top button {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+.stat {
+  font-size: 0.85rem;
+  color: var(--m);
+  white-space: nowrap;
+  background: var(--p);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--b);
+}
+
+.stat b {
+  color: var(--t);
+  font-size: 0.95rem;
+}
+
+/* Docking Panel & Feedback */
+#tk {
+  padding-bottom: 220px;
+}
+
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom, 0px));
+  background: rgba(19, 31, 55, 0.95);
+  backdrop-filter: blur(16px);
+  border-top: 2px solid var(--b);
+  z-index: 6;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.dock > * {
+  max-width: 728px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dock button {
+  display: block;
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 14px;
+}
+
+.dock.good {
+  background: rgba(6, 53, 42, 0.95);
+  border-color: var(--g);
+}
+
+.dock.bad {
+  background: rgba(58, 26, 34, 0.95);
+  border-color: var(--r);
+}
+
+.dock.bad #go {
+  background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--r-glow);
+}
+
+#fb {
+  max-height: 30vh;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+#fb p {
+  margin: 0 0 8px;
+  font-size: 0.98rem;
+}
+
+/* Keypad for Nucleotides */
+.kp {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) 1.3fr;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+
+.kp button {
+  padding: 12px 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.2rem;
+  border-radius: 10px;
+}
+
+/* Tables & Results */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+td, th {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--b);
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+th {
+  color: var(--m);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Helper Utilities */
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.m { color: var(--m); }
+.ok { color: var(--g); font-weight: 600; }
+.no { color: var(--r); font-weight: 600; }
+
+.hide { display: none !important; }
+
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#kls button {
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+/* Animations */
+@keyframes up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sl {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+#tk .card, #menu .card, #res .card, #lb .card, .lvc {
+  animation: up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.dock.good, .dock.bad {
+  animation: sl 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#tk > .card {
+  border-left: 4px solid var(--g);
+}
