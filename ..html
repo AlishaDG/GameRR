@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --panel-border: #334155;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --accent: #3b82f6;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 75%),
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 100% 100%, 28px 28px;
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 24px 0 12px;
+}
+
+.logo {
+  position: relative;
+  width: 64px;
+  height: 56px;
+  margin: 0 auto 12px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+
+.logo i {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.logo i:first-child {
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(135deg, var(--accent), #1d4ed8);
+  left: 0;
+  bottom: 0;
+}
+
+.logo i:last-child {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--primary), #047857);
+  right: 0;
+  top: 0;
+  border: 3px solid var(--bg);
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0.1em 0;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--primary) 20%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sub {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  margin: 0;
+}
+
+h2 {
+  margin: 0.2em 0 0.6em;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Cards & Containers */
+.card {
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin: 14px 0;
+  box-shadow: var(--shadow-md);
+}
+
+.bin {
+  border: 1px dashed var(--accent);
+  background: rgba(59, 130, 246, 0.08);
+  color: #60a5fa;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 12px 0;
+}
+
+/* Sequence & Base Styling */
+.seq {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  word-break: break-all;
+  margin: 12px 0;
+  background: #090d16;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.seq i {
+  font-style: normal;
+  font-weight: 700;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 1px;
+}
+
+.bA { color: #34d399; background: rgba(52, 211, 153, 0.12); }
+.bU, .bT { color: #fbbf24; background: rgba(251, 191, 36, 0.12); }
+.bC { color: #60a5fa; background: rgba(96, 165, 250, 0.12); }
+.bG { color: #f472b6; background: rgba(244, 114, 182, 0.12); }
+
+/* Buttons */
+button {
+  font: inherit;
+  font-weight: 600;
+  background: var(--primary);
+  color: #022c22;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 0 #047857, var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #047857;
+}
+
+button.s {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 4px 0 #0f172a, var(--shadow-sm);
+}
+
+button.s:hover {
+  border-color: var(--accent);
+  color: #f1f5f9;
+}
+
+button.x {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 3px 0 rgba(153, 27, 27, 0.6);
+}
+
+button.x:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+button.on {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.big {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+/* Inputs & Form Controls */
+input[type="text"] {
+  width: 100%;
+  background: #090d16;
+  color: var(--text);
+  border: 2px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 1.05rem;
+  margin: 6px 0 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+input.gok {
+  border-color: var(--primary);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+input.gno {
+  border-color: var(--danger);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+label.o {
+  color: var(--text);
+  font-size: 0.98rem;
+  padding: 6px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+}
+
+label.o input[type="checkbox"],
+label.o input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* Level Selection Cards */
+.lvc {
+  display: block;
+  background: var(--panel);
+  border: 2px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.lvc input {
+  display: none;
+}
+
+.lvc b {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 2px;
+  transition: color 0.2s;
+}
+
+.lvc span {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.lvc:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.lvc:has(input:checked) {
+  border-color: var(--primary);
+  background: rgba(16, 185, 129, 0.08);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.lvc:has(input:checked) b {
+  color: var(--primary);
+}
+
+/* Splicing Interactive Segments */
+.seg {
+  font-family: ui-monospace, monospace;
+  background: #090d16;
+  color: var(--text);
+  border: 2px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  margin: 4px 6px 6px 0;
+  padding: 8px 12px;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+
+.seg:hover {
+  border-color: var(--danger);
+}
+
+.seg.sel {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.15);
+  text-decoration: line-through;
+}
+
+/* Virtual On-Screen Keypad */
+.kp {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) 1.3fr;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+
+.kp button {
+  padding: 12px 0;
+  font-family: ui-monospace, monospace;
+  font-size: 1.15rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Top Sticky Bar */
+.top {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(8px);
+  padding: 10px 0 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.top button {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+.pgw {
+  flex: 1;
+  min-width: 80px;
+  height: 10px;
+  background: var(--panel);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+}
+
+.pgw div {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--primary), #38bdf8);
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.stat {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  background: var(--panel);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--panel-border);
+}
+
+.stat b {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Bottom Action Dock */
+#tk {
+  padding-bottom: 220px;
+}
+
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 14px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(16px);
+  border-top: 2px solid var(--panel-border);
+  z-index: 20;
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.dock > * {
+  max-width: 728px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dock button {
+  display: block;
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 14px;
+}
+
+.dock.good {
+  background: rgba(6, 40, 32, 0.95);
+  border-color: var(--primary);
+  animation: slideUp 0.25s ease-out;
+}
+
+.dock.bad {
+  background: rgba(50, 20, 26, 0.95);
+  border-color: var(--danger);
+  animation: slideUp 0.25s ease-out;
+}
+
+.dock.bad #go {
+  background: var(--danger);
+  box-shadow: 0 4px 0 #991b1b;
+  color: #ffffff;
+}
+
+#fb {
+  max-height: 28vh;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+#fb p {
+  margin: 0 0 6px;
+}
+
+/* Leaderboard & Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+td, th {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--panel-border);
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+th {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Utilities & Animations */
+.m { color: var(--text-muted); }
+.ok { color: var(--primary); font-weight: 600; }
+.no { color: var(--danger); font-weight: 600; }
+.hide { display: none !important; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+#kls button {
+  padding: 8px 14px;
+  font-size: 0.88rem;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+#tk .card,
+#menu .card,
+#res .card,
+#lb .card,
+.lvc {
+  animation: fadeUp 0.3s ease-out both;
+}
+
+#tk > .card {
+  border-left: 4px solid var(--primary);
+} name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ribosoom Runner</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <div class="hero">
+      <div class="logo"><i></i><i></i></div>
+      <h1>Ribosoom <span>Runner</span></h1>
+      <p class="sub">Eiwitsynthese, mutaties en splicing</p>
+    </div>
+
+    <div id="menu">
+      <div class="card">
+        <label>Naam<input type="text" id="nm" maxlength="30"></label>
+        <label>Klas</label>
+        <div class="row" id="kls" style="margin-top:6px">
+          <button class="s" data-k="4 havo">4 havo</button>
+          <button class="s" data-k="5 havo">5 havo</button>
+          <button class="s" data-k="4 vwo">4 vwo</button>
+          <button class="s" data-k="5 vwo">5 vwo</button>
+          <button class="s" data-k="6 vwo">6 vwo</button>
+        </div>
+      </div>
+      <div class="bin">[Binas Tabel 71C vereist]</div>
+      <div id="lv">
+        <label class="lvc"><input type="radio" name="lv" value="1" checked><b>Level 1: Basissynthese &amp; tRNA</b><span>Transcriptie, anticodons en translatie</span></label>
+        <label class="lvc"><input type="radio" name="lv" value="2"><b>Level 2: Mutaties &amp; genetische fouten</b><span>Gemuteerd DNA en mutatie-analyse</span></label>
+        <label class="lvc"><input type="radio" name="lv" value="3"><b>Level 3: Eukaryotische pre-mRNA verwerking</b><span>Introns, exons en alternatieve splicing</span></label>
+        <label class="lvc"><input type="radio" name="lv" value="4"><b>Level 4: Bosslevel - sikkelcelanemie</b><span>Casus waarin alle thema's samenkomen</span></label>
+      </div>
+      <button class="big" id="st">Start spel</button>
+      <div class="row" style="margin-top:14px">
+        <button class="s" id="pr" style="flex:1">Oefenvragen</button>
+        <button class="s" id="kk" style="flex:1">Klassement</button>
+      </div>
+      <div class="card hide" id="pc">
+        <b>Kies thema's (geen punten, geen timer)</b>
+        <label class="o"><input type="checkbox" value="tr" checked> Transcriptie &amp; tRNA</label>
+        <label class="o"><input type="checkbox" value="sp" checked> Splicing (Introns/Exons)</label>
+        <label class="o"><input type="checkbox" value="tl" checked> Translatie</label>
+        <label class="o"><input type="checkbox" value="mu" checked> Mutaties</label>
+        <button id="ps">Start oefenen</button>
+      </div>
+      <p id="msg" class="no"></p>
+    </div>
+
+    <div id="play" class="hide">
+      <div class="top">
+        <button class="x" id="stop">Stop Game</button>
+        <button class="s hide" id="back">Menu</button>
+        <div class="pgw" id="pgw"><div id="pg"></div></div>
+        <span class="stat" id="stk">Reeks <b id="sk">0</b></span>
+        <span class="stat" id="sct">Score <b id="sc">0</b></span>
+        <span class="stat" id="tw"><b id="tm">00:00</b></span>
+      </div>
+      <div class="m" id="info"></div>
+      <div id="tk"></div>
+      <div class="dock" id="dock"></div>
+    </div>
+
+    <div id="res" class="hide"></div>
+    <div id="lb" class="hide"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
